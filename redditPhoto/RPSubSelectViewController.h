@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RPViewController.h"
 
-@interface RPSubSelectViewController : UITableViewController
+@interface RPSubSelectViewController : UITableViewController{
+    int returnedNum;
+}
+
+@property (nonatomic, strong) NSMutableArray *subredditList;
+@property (nonatomic, strong) NSMutableDictionary *pages;
 
 @end

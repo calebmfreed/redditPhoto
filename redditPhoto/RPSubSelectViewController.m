@@ -23,15 +23,36 @@
     return self;
 }
 
+- (void) viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = NO;
+
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationController.navigationBarHidden = NO;
 
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationItem.title = @"Subreddits";
+    _subredditList = [[NSMutableArray alloc] initWithObjects:@"pics",@"funny",@"adviceanimals",@"yogapants", @"bikinis", @"nsfw", @"wtf", @"ass+titties", @"ass", @"tightdresses", nil];
+    _pages = [[NSMutableDictionary alloc]init];
+    NSNumber *zero = [NSNumber numberWithInt:0];
+    for( id sub in _subredditList)
+    {
+        [_pages setObject:zero forKey:sub];
+    }
+    NSLog(@"%@",_subredditList);
+    returnedNum = 0;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -44,28 +65,30 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [_subredditList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    cell.textLabel.text = [_subredditList objectAtIndex:indexPath.row];
     
     // Configure the cell...
     
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"toPics" sender:self];
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -116,5 +139,22 @@
 }
 
  */
+
+- (void)RPViewControllerDidFinish:(RPViewController*)controller
+{
+    NSLog(@"ViewReturned page: %@", _pages);
+    NSNumber *page = [NSNumber numberWithInt:controller.numPage];
+    [_pages setValue:page forKey:controller.subReddit];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString: @"toPics"])
+    {
+        NSIndexPath *selectedRowIndex = [self.tableView indexPathForSelectedRow];
+        [[segue destinationViewController] setDelegate: self];
+        [[segue destinationViewController] setSubReddit:[_subredditList objectAtIndex:selectedRowIndex.row]];
+        [[segue destinationViewController] setNumPage:[[_pages valueForKey:[_subredditList objectAtIndex:selectedRowIndex.row]]intValue]];
+    }
+}
 
 @end

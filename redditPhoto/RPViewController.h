@@ -7,18 +7,33 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RPSubSelectViewController.h"
 
-@interface RPViewController : UIViewController <UIGestureRecognizerDelegate>
-{
-    int numPage;
-}
+@class RPViewController;
+
+@protocol RPViewControllerDelegate
+- (void)RPViewControllerDidFinish:(RPViewController*)controller;
+@end
+
+@interface RPViewController : UIViewController <UIGestureRecognizerDelegate, UIWebViewDelegate>
+
 - (IBAction)doSomething:(UISwipeGestureRecognizer *)recognizer;
+- (void)centerScrollViewContents;
+- (void)scrollViewDoubleTapped:(UITapGestureRecognizer*)recognizer;
+- (void)scrollViewTwoFingerTapped:(UITapGestureRecognizer*)recognizer;
 
+@property (strong, nonatomic) IBOutlet UIImageView *pic;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollWindow;
+@property (nonatomic) int numPage;
+@property (weak, nonatomic) id <RPViewControllerDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UILabel *picTitle;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
-@property (weak, nonatomic) IBOutlet UIImageView *pic;
 @property (strong, nonatomic) NSDictionary *response;
+@property (strong, nonatomic) NSString *subReddit;
 - (IBAction)goBack:(id)sender;
 - (IBAction)goNext:(id)sender;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *busy;
 
 - (NSString*)loadDataFromHtml:(NSURLRequest*)urlrequest;
 

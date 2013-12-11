@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3638A65B1853E45300F40765 /* RPSubSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3638A65A1853E45300F40765 /* RPSubSelectViewController.m */; };
 		36BFD4251853098F00FA7478 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36BFD4241853098F00FA7478 /* Foundation.framework */; };
 		36BFD4271853098F00FA7478 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36BFD4261853098F00FA7478 /* CoreGraphics.framework */; };
 		36BFD4291853098F00FA7478 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36BFD4281853098F00FA7478 /* UIKit.framework */; };
@@ -54,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3638A6591853E45300F40765 /* RPSubSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPSubSelectViewController.h; sourceTree = "<group>"; };
+		3638A65A1853E45300F40765 /* RPSubSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPSubSelectViewController.m; sourceTree = "<group>"; };
 		36BFD4211853098F00FA7478 /* redditPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = redditPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36BFD4241853098F00FA7478 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		36BFD4261853098F00FA7478 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -183,6 +186,8 @@
 				36BFD4361853098F00FA7478 /* Main.storyboard */,
 				36BFD4391853098F00FA7478 /* RPViewController.h */,
 				36BFD43A1853098F00FA7478 /* RPViewController.m */,
+				3638A6591853E45300F40765 /* RPSubSelectViewController.h */,
+				3638A65A1853E45300F40765 /* RPSubSelectViewController.m */,
 				36BFD43C1853098F00FA7478 /* Images.xcassets */,
 				36BFD42B1853098F00FA7478 /* Supporting Files */,
 			);
@@ -388,6 +393,7 @@
 				36BFD47218530B9E00FA7478 /* AFURLConnectionOperation.m in Sources */,
 				36BFD4891853169F00FA7478 /* UIButton+AFNetworking.m in Sources */,
 				36BFD4871853169F00FA7478 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				3638A65B1853E45300F40765 /* RPSubSelectViewController.m in Sources */,
 				36BFD47118530B9E00FA7478 /* AFSecurityPolicy.m in Sources */,
 				36BFD46F18530B9E00FA7478 /* AFHTTPSessionManager.m in Sources */,
 				36BFD4881853169F00FA7478 /* UIAlertView+AFNetworking.m in Sources */,
