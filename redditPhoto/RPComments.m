@@ -8,6 +8,7 @@
 
 #import "RPComments.h"
 #import "AFNetworking.h"
+#import "CommentCell.h"
 
 @interface RPComments ()
 
@@ -34,6 +35,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.wheel startAnimating];
+    [self.wheel setHidesWhenStopped:YES];
     loaded = NO;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager GET:_commentURL  parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -118,6 +121,7 @@
         //            }
         //            },
         //First big comment
+        [self.wheel stopAnimating];
         NSLog(@"comments: %@", _commentArray[1][@"data"][@"children"][0][@"data"][@"body"]);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -146,17 +150,17 @@
     return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
-    CGSize maxSize = CGSizeMake(100.0,100.0);
-    CGSize cellSize = [_commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"]
-                       sizeWithFont:[UIFont systemFontOfSize:15]
-                       constrainedToSize:maxSize
-                       lineBreakMode:UILineBreakModeWordWrap];
-    return cellSize.height;
-    
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    
+//    CGSize maxSize = CGSizeMake(100.0,100.0);
+//    CGSize cellSize = [_commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"]
+//                       sizeWithFont:[UIFont systemFontOfSize:15]
+//                       constrainedToSize:maxSize
+//                       lineBreakMode:UILineBreakModeWordWrap];
+//    return cellSize.height;
+//    
+//}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -167,12 +171,15 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"comment";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(loaded == YES)
     {
-        cell.textLabel.text = _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"];
-        cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        cell.textLabel.numberOfLines = 3;
+        cell.commentWords.text = _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"];
+        NSLog(@"Setting ups and downs");
+        cell.ups.text = [NSString stringWithFormat:@"%@", _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"ups"]];
+        cell.downs.text = [NSString stringWithFormat:@"%@", _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"downs"]];
+        NSLog(@"Done setting ups and downs");
+
 
     }
     // Configure the cell...

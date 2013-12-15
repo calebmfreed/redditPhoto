@@ -20,9 +20,10 @@
     BOOL loaded;
 }
 
+
 @property (strong, nonatomic) id <CommentDelegate> delegate;
 @property (strong, nonatomic) NSString * commentURL;
 @property (strong, nonatomic) NSArray * commentArray;
-
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *wheel;
 
 @end
