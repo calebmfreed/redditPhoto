@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		3638A65B1853E45300F40765 /* RPSubSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3638A65A1853E45300F40765 /* RPSubSelectViewController.m */; };
+		364B25CC185AA2C600D7C2F7 /* data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 364B25CA185AA2C600D7C2F7 /* data.xcdatamodeld */; };
+		364B25CE185AA62600D7C2F7 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 364B25CD185AA62600D7C2F7 /* CoreData.framework */; };
+		36A574D7185B7FFF00A3B145 /* Subreddits.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A574D6185B7FFF00A3B145 /* Subreddits.m */; };
+		36A574DA185B841600A3B145 /* addSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A574D9185B841600A3B145 /* addSubViewController.m */; };
+		36A574DD185D222B00A3B145 /* RPComments.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A574DC185D222B00A3B145 /* RPComments.m */; };
 		36BFD4251853098F00FA7478 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36BFD4241853098F00FA7478 /* Foundation.framework */; };
 		36BFD4271853098F00FA7478 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36BFD4261853098F00FA7478 /* CoreGraphics.framework */; };
 		36BFD4291853098F00FA7478 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36BFD4281853098F00FA7478 /* UIKit.framework */; };
@@ -57,6 +62,14 @@
 /* Begin PBXFileReference section */
 		3638A6591853E45300F40765 /* RPSubSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPSubSelectViewController.h; sourceTree = "<group>"; };
 		3638A65A1853E45300F40765 /* RPSubSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPSubSelectViewController.m; sourceTree = "<group>"; };
+		364B25CB185AA2C600D7C2F7 /* data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = data.xcdatamodel; sourceTree = "<group>"; };
+		364B25CD185AA62600D7C2F7 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		36A574D5185B7FFF00A3B145 /* Subreddits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Subreddits.h; sourceTree = "<group>"; };
+		36A574D6185B7FFF00A3B145 /* Subreddits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Subreddits.m; sourceTree = "<group>"; };
+		36A574D8185B841600A3B145 /* addSubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = addSubViewController.h; sourceTree = "<group>"; };
+		36A574D9185B841600A3B145 /* addSubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = addSubViewController.m; sourceTree = "<group>"; };
+		36A574DB185D222B00A3B145 /* RPComments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPComments.h; sourceTree = "<group>"; };
+		36A574DC185D222B00A3B145 /* RPComments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPComments.m; sourceTree = "<group>"; };
 		36BFD4211853098F00FA7478 /* redditPhoto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = redditPhoto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36BFD4241853098F00FA7478 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		36BFD4261853098F00FA7478 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -124,6 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				364B25CE185AA62600D7C2F7 /* CoreData.framework in Frameworks */,
 				36BFD4981853B23900FA7478 /* libxml2.dylib in Frameworks */,
 				36BFD4271853098F00FA7478 /* CoreGraphics.framework in Frameworks */,
 				36BFD4291853098F00FA7478 /* UIKit.framework in Frameworks */,
@@ -169,6 +183,7 @@
 		36BFD4231853098F00FA7478 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				364B25CD185AA62600D7C2F7 /* CoreData.framework */,
 				36BFD4971853B23900FA7478 /* libxml2.dylib */,
 				36BFD4241853098F00FA7478 /* Foundation.framework */,
 				36BFD4261853098F00FA7478 /* CoreGraphics.framework */,
@@ -184,11 +199,18 @@
 				36BFD4331853098F00FA7478 /* RPAppDelegate.h */,
 				36BFD4341853098F00FA7478 /* RPAppDelegate.m */,
 				36BFD4361853098F00FA7478 /* Main.storyboard */,
-				36BFD4391853098F00FA7478 /* RPViewController.h */,
-				36BFD43A1853098F00FA7478 /* RPViewController.m */,
 				3638A6591853E45300F40765 /* RPSubSelectViewController.h */,
 				3638A65A1853E45300F40765 /* RPSubSelectViewController.m */,
+				36A574D8185B841600A3B145 /* addSubViewController.h */,
+				36A574D9185B841600A3B145 /* addSubViewController.m */,
+				36BFD4391853098F00FA7478 /* RPViewController.h */,
+				36BFD43A1853098F00FA7478 /* RPViewController.m */,
+				36A574DB185D222B00A3B145 /* RPComments.h */,
+				36A574DC185D222B00A3B145 /* RPComments.m */,
 				36BFD43C1853098F00FA7478 /* Images.xcassets */,
+				364B25CA185AA2C600D7C2F7 /* data.xcdatamodeld */,
+				36A574D5185B7FFF00A3B145 /* Subreddits.h */,
+				36A574D6185B7FFF00A3B145 /* Subreddits.m */,
 				36BFD42B1853098F00FA7478 /* Supporting Files */,
 			);
 			path = redditPhoto;
@@ -382,7 +404,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36A574DD185D222B00A3B145 /* RPComments.m in Sources */,
 				36BFD46D18530B9E00FA7478 /* AFHTTPRequestOperation.m in Sources */,
+				36A574DA185B841600A3B145 /* addSubViewController.m in Sources */,
 				36BFD48A1853169F00FA7478 /* UIImageView+AFNetworking.m in Sources */,
 				36BFD4351853098F00FA7478 /* RPAppDelegate.m in Sources */,
 				36BFD46E18530B9E00FA7478 /* AFHTTPRequestOperationManager.m in Sources */,
@@ -393,6 +417,7 @@
 				36BFD47218530B9E00FA7478 /* AFURLConnectionOperation.m in Sources */,
 				36BFD4891853169F00FA7478 /* UIButton+AFNetworking.m in Sources */,
 				36BFD4871853169F00FA7478 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				364B25CC185AA2C600D7C2F7 /* data.xcdatamodeld in Sources */,
 				3638A65B1853E45300F40765 /* RPSubSelectViewController.m in Sources */,
 				36BFD47118530B9E00FA7478 /* AFSecurityPolicy.m in Sources */,
 				36BFD46F18530B9E00FA7478 /* AFHTTPSessionManager.m in Sources */,
@@ -403,6 +428,7 @@
 				36BFD4941853B11900FA7478 /* TFHpple.m in Sources */,
 				36BFD48C1853169F00FA7478 /* UIWebView+AFNetworking.m in Sources */,
 				36BFD47518530B9E00FA7478 /* AFURLSessionManager.m in Sources */,
+				36A574D7185B7FFF00A3B145 /* Subreddits.m in Sources */,
 				36BFD4311853098F00FA7478 /* main.m in Sources */,
 				36BFD43B1853098F00FA7478 /* RPViewController.m in Sources */,
 			);
@@ -627,6 +653,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		364B25CA185AA2C600D7C2F7 /* data.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				364B25CB185AA2C600D7C2F7 /* data.xcdatamodel */,
+			);
+			currentVersion = 364B25CB185AA2C600D7C2F7 /* data.xcdatamodel */;
+			path = data.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 36BFD4191853098F00FA7478 /* Project object */;
 }

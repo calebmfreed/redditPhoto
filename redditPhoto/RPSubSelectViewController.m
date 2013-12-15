@@ -7,12 +7,16 @@
 //
 
 #import "RPSubSelectViewController.h"
+#import "addSubViewController.h"
+#import "RPAppDelegate.h"
 
 @interface RPSubSelectViewController ()
 
 @end
 
 @implementation RPSubSelectViewController
+@synthesize managedObjectContext, thing;
+
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -31,20 +35,58 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _subredditList = [[NSMutableArray alloc] init];
+
     self.navigationController.navigationBarHidden = NO;
 
     self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationItem.title = @"Subreddits";
-    _subredditList = [[NSMutableArray alloc] initWithObjects:@"pics",@"funny",@"adviceanimals",@"yogapants", @"bikinis", @"nsfw", @"wtf", @"ass+titties", @"ass", @"tightdresses", nil];
+    
+    
+    id delegate = [[UIApplication sharedApplication] delegate];
+    self.managedObjectContext = [delegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"Subreddits" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    thing = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSLog(@"thing array: %@", thing );
+
+    //NSLog(@"thing: %@", [[thing valueForKey:@"name"] objectAtIndex:0] );
+    //Puts add button for adding new subreddit
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc]
+                                  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                  target:self action:@selector(addButtonPressed)];
+    self.navigationItem.leftBarButtonItem = addButton;
+    //Adds edit button to delete subreddits
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit"
+                                                                              style:self.editButtonItem.style
+                                                                             target:self
+                                                                             action:@selector(editButtonPressed)];
+    
+    //Loads the subreddit list with objects from the core database
+    for(int i = 0; i < [[thing valueForKey:@"name"] count]; i++)
+    {
+        [_subredditList addObject:[[thing valueForKey:@"name"] objectAtIndex:i]];
+
+    }
+    //self.title = @"Failed Banks";
+    //_subredditList = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+
+    //[_subredditList addObject:[[thing valueForKey:@"name"] objectAtIndex:0]];
+    
+    //_subredditList = [[NSMutableArray alloc] initWithObjects:@"pics",@"funny",@"adviceanimals",@"yogapants", @"bikinis", @"nsfw", @"wtf", @"ass+titties", @"ass", @"tightdresses", nil];
     _pages = [[NSMutableDictionary alloc]init];
     NSNumber *zero = [NSNumber numberWithInt:0];
     for( id sub in _subredditList)
     {
         [_pages setObject:zero forKey:sub];
     }
-    NSLog(@"%@",_subredditList);
+    NSLog(@"Sub List: %@",_subredditList);
     returnedNum = 0;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -52,6 +94,18 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+    
+}
+
+- (void) editButtonPressed
+{
+    self.tableView.editing = !self.tableView.editing;
+
+}
+
+- (void) addButtonPressed
+{
+    [self performSegueWithIdentifier:@"add" sender:nil];
     
 }
 
@@ -89,6 +143,38 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self performSegueWithIdentifier:@"toPics" sender:self];
 }
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        //    1
+        [tableView beginUpdates];
+        // Delete the row from the data source
+        
+        [_subredditList removeObjectAtIndex:indexPath.row];
+
+        //    2
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+        //    3
+        [self.managedObjectContext deleteObject:[self.thing objectAtIndex:indexPath.row]];
+        NSError *error;
+
+        if (![self.managedObjectContext save:&error]) {
+            NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        }
+        //    4
+        RPAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+        self.thing = [appDelegate fetchNames];
+        //    5
+        [tableView endUpdates];
+        if([_subredditList count] == 0)
+        {
+            [self editButtonPressed];
+        }
+    }
+}
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -140,6 +226,48 @@
 
  */
 
+- (void)AddViewControllerDidFinish:(addSubViewController*)controller;
+{
+    if(![controller.passSub isEqualToString:@""] && ![_subredditList containsObject:controller.passSub])
+    {
+        NSManagedObjectContext *context = [self managedObjectContext];
+        NSManagedObject *sub = [NSEntityDescription
+                                           insertNewObjectForEntityForName:@"Subreddits"
+                                           inManagedObjectContext:context];
+        [sub setValue:controller.passSub forKey:@"name"];
+        NSLog(@"Done adding%@", controller.passSub);
+        NSNumber *zero = [NSNumber numberWithInt:0];
+        [_pages setObject:zero forKey:controller.passSub];
+        [_subredditList addObject:controller.passSub];
+        NSError *error;
+
+        if (![context save:&error]) {
+            NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        }
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription
+                                       entityForName:@"Subreddits" inManagedObjectContext:context];
+        [fetchRequest setEntity:entity];
+        NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+        //NSLog(@"%@",[fetchedObjects objectAtIndex:2]);
+        //[context deleteObject:[fetchedObjects objectAtIndex:0]];
+        for (NSManagedObject *info in fetchedObjects) {
+            NSLog(@"Name: %@", [info valueForKey:@"name"]);
+            
+        }
+        RPAppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+        self.thing = [appDelegate fetchNames];
+        [self.tableView reloadData];
+    }
+    else{
+        NSLog(@"No sub added");
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+}
+
+
 - (void)RPViewControllerDidFinish:(RPViewController*)controller
 {
     NSLog(@"ViewReturned page: %@", _pages);
@@ -154,6 +282,11 @@
         [[segue destinationViewController] setDelegate: self];
         [[segue destinationViewController] setSubReddit:[_subredditList objectAtIndex:selectedRowIndex.row]];
         [[segue destinationViewController] setNumPage:[[_pages valueForKey:[_subredditList objectAtIndex:selectedRowIndex.row]]intValue]];
+    }
+    
+    if([segue.identifier isEqualToString: @"add"])
+    {
+        [[segue destinationViewController] setDelegate: self];
     }
 }
 

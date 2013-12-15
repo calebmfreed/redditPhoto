@@ -10,9 +10,10 @@
 #import "AFNetworking.h"
 #import "UIKit+AFNetworking.h"
 #import "TFHpple.h"
+#import "RPComments.h"
 
 
-static NSString *const BaseURLString = @"http://www.reddit.com/";
+static NSString *const BaseURLString = @"http://www.reddit.com";
 
 
 @interface RPViewController ()
@@ -30,7 +31,7 @@ static NSString *const BaseURLString = @"http://www.reddit.com/";
 {
     [super viewDidLoad];
     _webView.delegate = self;
-    self.view.backgroundColor = [UIColor grayColor];
+    self.view.backgroundColor = [UIColor blackColor];
     //[self loadDataFromHtml:nil];
 //    NSURL *url = [NSURL URLWithString:@"http://ereydaysexy.tumblr.com/post/69045795593"];
 //    NSString *webData= [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:nil];
@@ -50,11 +51,32 @@ static NSString *const BaseURLString = @"http://www.reddit.com/";
 //    scrollview.backgroundColor = [UIColor grayColor];
 //    [self.view addSubview:scrollview];
 //    [scrollview addSubview:_pic];
-//
-    self.navigationItem.title = _subReddit;
-    self.navigationItem.backBarButtonItem.title = @"Subreddits";
-    self.navigationController.navigationBarHidden = YES;
+
+    
+    
+    UITapGestureRecognizer *singleFingerTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(handleSingleTap)];
+    [self.view addGestureRecognizer:singleFingerTap];
+    
+    self.navigationItem.title = @"";
+    self.navigationItem.hidesBackButton = YES;
+    self.navigationController.navigationBarHidden = NO;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    
+    _picTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
+    _picTitle.backgroundColor = [UIColor clearColor];
+    _picTitle.numberOfLines = 2;
+    _picTitle.minimumScaleFactor = 10.0/14.0;
+    _picTitle.adjustsFontSizeToFitWidth = YES;
+    _picTitle.font = [UIFont boldSystemFontOfSize: 14.0f];
+    _picTitle.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    _picTitle.textAlignment = NSTextAlignmentCenter;
+    _picTitle.textColor = [UIColor whiteColor];
+    _picTitle.text = @"";
+    
+    self.navigationItem.titleView = _picTitle;
+    _webView.backgroundColor = [UIColor blackColor];
 
 //    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
 //    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
@@ -101,8 +123,16 @@ static NSString *const BaseURLString = @"http://www.reddit.com/";
 //    [self.scrollWindow addGestureRecognizer:twoFingerTapRecognizer];
 }
 
+-(void) handleSingleTap
+{
+    NSLog(@"Single Tap");
+    //_commentUrl = [NSString stringWithFormat:@"%@%@.json?", BaseURLString, _permLink];
+    //NSLog(@"link: %@", _commentUrl);
 
+    [self performSegueWithIdentifier:@"toComments" sender:self];
+}
 
+//Checks gestures for right and left swipe
 - (IBAction)doSomething:(UISwipeGestureRecognizer *)recognizer{
     NSLog(@"%i",numPage);
     //[self loadPicture:numPage];
@@ -135,7 +165,8 @@ static NSString *const BaseURLString = @"http://www.reddit.com/";
 
     NSDictionary * tempDict = _response[@"children"][num][@"data"];
     _picTitle.text = tempDict[@"title"];
-    //self.navigationController.title = tempDict[@"title"];
+    _permLink = tempDict[@"permalink"];
+    NSLog(@"perm link= %@", _permLink);
 
     NSLog(@"Huh: %@",tempDict);
 
@@ -343,6 +374,22 @@ static NSString *const BaseURLString = @"http://www.reddit.com/";
     [self centerScrollViewContents];
 }
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString: @"toComments"])
+    {
+        _commentUrl = [NSString stringWithFormat:@"%@%@.json?", BaseURLString, _permLink];
+
+        [[segue destinationViewController] setDelegate: self];
+        [[segue destinationViewController] setCommentURL:_commentUrl];
+
+    }
+
+}
+
+-(void) commentsViewDidFinish:(RPComments*)controller
+{
+    
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

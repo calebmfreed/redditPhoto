@@ -23,17 +23,20 @@
 - (void)scrollViewTwoFingerTapped:(UITapGestureRecognizer*)recognizer;
 
 @property (strong, nonatomic) IBOutlet UIImageView *pic;
+@property (weak, nonatomic) IBOutlet UIButton *commentsButton;
 
+@property (strong, nonatomic) NSString * permLink;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollWindow;
 @property (nonatomic) int numPage;
 @property (weak, nonatomic) id <RPViewControllerDelegate> delegate;
-@property (weak, nonatomic) IBOutlet UILabel *picTitle;
+@property (strong, nonatomic) IBOutlet UILabel *picTitle;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @property (strong, nonatomic) NSDictionary *response;
 @property (strong, nonatomic) NSString *subReddit;
 - (IBAction)goBack:(id)sender;
 - (IBAction)goNext:(id)sender;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *busy;
+@property (weak, nonatomic) NSString *commentUrl;
 
 - (NSString*)loadDataFromHtml:(NSURLRequest*)urlrequest;
 
