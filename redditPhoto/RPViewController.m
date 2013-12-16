@@ -31,6 +31,8 @@ static NSString *const BaseURLString = @"http://www.reddit.com";
 {
     [super viewDidLoad];
     _webView.delegate = self;
+    [_webView setOpaque:NO];
+    
     self.view.backgroundColor = [UIColor blackColor];
     //[self loadDataFromHtml:nil];
 //    NSURL *url = [NSURL URLWithString:@"http://ereydaysexy.tumblr.com/post/69045795593"];
@@ -63,6 +65,8 @@ static NSString *const BaseURLString = @"http://www.reddit.com";
     self.navigationItem.hidesBackButton = YES;
     self.navigationController.navigationBarHidden = NO;
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    self.commentsButton.layer.cornerRadius = 10;
+    self.commentsButton.clipsToBounds = YES;
     
     _picTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
     _picTitle.backgroundColor = [UIColor clearColor];
@@ -106,7 +110,8 @@ static NSString *const BaseURLString = @"http://www.reddit.com";
         _response = tempDict[@"data"];
         //NSLog(@"single reponse, %@", [[[_response objectForKey:@"data"]objectForKey:@"children"]objectAtIndex:0]);
         //NSLog(@"again single reponse, %@", tempDict[@"data"][@"children"][0][@"data"]);
-        
+        [self.commentsButton setTitle:[NSString stringWithFormat:@"Comments: %@", _response[@"children"][numPage][@"data"][@"num_comments"]] forState:UIControlStateNormal];
+
         [self loadPicture:numPage];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
@@ -137,11 +142,14 @@ static NSString *const BaseURLString = @"http://www.reddit.com";
     NSLog(@"%i",numPage);
     //[self loadPicture:numPage];
     //numPage++;
+    
     if(recognizer.direction == UISwipeGestureRecognizerDirectionLeft)
     {
         NSLog(@"LEFT");
         numPage++;
         [_busy startAnimating];
+        [self.webView loadHTMLString:@"" baseURL:nil];
+        self.webView.hidden = YES;
         [self loadPicture:numPage];
         
     }
@@ -151,6 +159,8 @@ static NSString *const BaseURLString = @"http://www.reddit.com";
         NSLog(@"Right");
         if(numPage > 0)
         {
+            [self.webView loadHTMLString:@"" baseURL:nil];
+            self.webView.hidden = YES;
             [_busy startAnimating];
             numPage--;
             [self loadPicture:numPage];
@@ -167,6 +177,7 @@ static NSString *const BaseURLString = @"http://www.reddit.com";
     _picTitle.text = tempDict[@"title"];
     _permLink = tempDict[@"permalink"];
     NSLog(@"perm link= %@", _permLink);
+    [self.commentsButton setTitle:[NSString stringWithFormat:@"Comments: %@", _response[@"children"][num][@"data"][@"num_comments"]] forState:UIControlStateNormal];
 
     NSLog(@"Huh: %@",tempDict);
 
@@ -260,6 +271,8 @@ static NSString *const BaseURLString = @"http://www.reddit.com";
     NSLog(@"WebvieFinishedLoading");
     //[_webView setHidden:NO];
     //[_busy stopAnimating];
+    NSString *bodyStyle = @"document.getElementsByTagName('body')[0].style.textAlign = 'center';";
+    [self.webView stringByEvaluatingJavaScriptFromString:bodyStyle];
 
 
 }

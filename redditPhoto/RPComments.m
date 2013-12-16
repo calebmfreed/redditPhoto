@@ -10,6 +10,10 @@
 #import "AFNetworking.h"
 #import "CommentCell.h"
 
+#define FONT_SIZE 15.0f
+#define CELL_CONTENT_WIDTH 320.0f
+#define CELL_CONTENT_MARGIN 12.0f
+
 @interface RPComments ()
 
 @end
@@ -150,17 +154,31 @@
     return 1;
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    static NSString *CellIdentifier = @"comment";
+    CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 //    CGSize maxSize = CGSizeMake(100.0,100.0);
 //    CGSize cellSize = [_commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"]
 //                       sizeWithFont:[UIFont systemFontOfSize:15]
 //                       constrainedToSize:maxSize
 //                       lineBreakMode:UILineBreakModeWordWrap];
-//    return cellSize.height;
-//    
-//}
+    
+    NSString* str =  _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"];
+
+    
+    
+    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+    
+    CGSize size = [str sizeWithFont:[UIFont fontWithName:@"Helvetica Neue" size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    
+    CGFloat height = MAX(size.height, 44.0f);
+    
+    //return height + (CELL_CONTENT_MARGIN * 2);
+    
+    return cell.commentWords.layer.frame.size.height + 20.0f;
+    
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -170,16 +188,28 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    UILabel *label = nil;
+
     static NSString *CellIdentifier = @"comment";
     CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(loaded == YES)
     {
+//        label = [[UILabel alloc] initWithFrame:CGRectZero];
+//        [label setLineBreakMode:UILineBreakModeWordWrap];
+//        [label setMinimumFontSize:FONT_SIZE];
+//        [label setNumberOfLines:0];
+//        [label setFont:[UIFont systemFontOfSize:FONT_SIZE]];
+//        [label setTag:1];
+//        
+//        [[cell contentView] addSubview:label];
+    
+        
         cell.commentWords.text = _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"];
         NSLog(@"Setting ups and downs");
         cell.ups.text = [NSString stringWithFormat:@"%@", _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"ups"]];
         cell.downs.text = [NSString stringWithFormat:@"%@", _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"downs"]];
         NSLog(@"Done setting ups and downs");
-
+        cell.commentWords.layer.borderWidth = 2.0f;
 
     }
     // Configure the cell...
