@@ -10,6 +10,7 @@
 		3638A65B1853E45300F40765 /* RPSubSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3638A65A1853E45300F40765 /* RPSubSelectViewController.m */; };
 		364B25CC185AA2C600D7C2F7 /* data.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 364B25CA185AA2C600D7C2F7 /* data.xcdatamodeld */; };
 		364B25CE185AA62600D7C2F7 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 364B25CD185AA62600D7C2F7 /* CoreData.framework */; };
+		36585546186BF12E00DB60FC /* SubContentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36585545186BF12E00DB60FC /* SubContentListViewController.m */; };
 		36684E5A185D3C1F00DDB3EA /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 36684E59185D3C1F00DDB3EA /* CommentCell.m */; };
 		36A574D7185B7FFF00A3B145 /* Subreddits.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A574D6185B7FFF00A3B145 /* Subreddits.m */; };
 		36A574DA185B841600A3B145 /* addSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36A574D9185B841600A3B145 /* addSubViewController.m */; };
@@ -65,6 +66,8 @@
 		3638A65A1853E45300F40765 /* RPSubSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPSubSelectViewController.m; sourceTree = "<group>"; };
 		364B25CB185AA2C600D7C2F7 /* data.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = data.xcdatamodel; sourceTree = "<group>"; };
 		364B25CD185AA62600D7C2F7 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		36585544186BF12E00DB60FC /* SubContentListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubContentListViewController.h; sourceTree = "<group>"; };
+		36585545186BF12E00DB60FC /* SubContentListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubContentListViewController.m; sourceTree = "<group>"; };
 		36684E58185D3C1F00DDB3EA /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentCell.h; sourceTree = "<group>"; };
 		36684E59185D3C1F00DDB3EA /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
 		36A574D5185B7FFF00A3B145 /* Subreddits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Subreddits.h; sourceTree = "<group>"; };
@@ -202,6 +205,8 @@
 				36BFD4331853098F00FA7478 /* RPAppDelegate.h */,
 				36BFD4341853098F00FA7478 /* RPAppDelegate.m */,
 				36BFD4361853098F00FA7478 /* Main.storyboard */,
+				36585544186BF12E00DB60FC /* SubContentListViewController.h */,
+				36585545186BF12E00DB60FC /* SubContentListViewController.m */,
 				36684E58185D3C1F00DDB3EA /* CommentCell.h */,
 				36684E59185D3C1F00DDB3EA /* CommentCell.m */,
 				3638A6591853E45300F40765 /* RPSubSelectViewController.h */,
@@ -430,6 +435,7 @@
 				36BFD47318530B9E00FA7478 /* AFURLRequestSerialization.m in Sources */,
 				36BFD4861853169F00FA7478 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				36BFD4951853B11900FA7478 /* TFHppleElement.m in Sources */,
+				36585546186BF12E00DB60FC /* SubContentListViewController.m in Sources */,
 				36BFD4941853B11900FA7478 /* TFHpple.m in Sources */,
 				36BFD48C1853169F00FA7478 /* UIWebView+AFNetworking.m in Sources */,
 				36684E5A185D3C1F00DDB3EA /* CommentCell.m in Sources */,

@@ -45,7 +45,7 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager GET:_commentURL  parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //NSLog(@"JSON: %@", responseObject);
-        NSDictionary * tempDict = (NSDictionary *)responseObject;
+        //NSDictionary * tempDict = (NSDictionary *)responseObject;
         _commentArray = responseObject;
         loaded = YES;
         [self.tableView reloadData];
@@ -156,27 +156,16 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    static NSString *CellIdentifier = @"comment";
-    CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 //    CGSize maxSize = CGSizeMake(100.0,100.0);
 //    CGSize cellSize = [_commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"]
 //                       sizeWithFont:[UIFont systemFontOfSize:15]
 //                       constrainedToSize:maxSize
 //                       lineBreakMode:UILineBreakModeWordWrap];
     
-    NSString* str =  _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"];
-
-    
-    
-    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-    
-    CGSize size = [str sizeWithFont:[UIFont fontWithName:@"Helvetica Neue" size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    
-    CGFloat height = MAX(size.height, 44.0f);
-    
     //return height + (CELL_CONTENT_MARGIN * 2);
-    
-    return cell.commentWords.layer.frame.size.height + 20.0f;
+    NSString *text = _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"];
+
+    return [self calcTextHeight:text] + 20.0f;
     
 }
 
@@ -194,22 +183,28 @@
     CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(loaded == YES)
     {
-//        label = [[UILabel alloc] initWithFrame:CGRectZero];
-//        [label setLineBreakMode:UILineBreakModeWordWrap];
-//        [label setMinimumFontSize:FONT_SIZE];
-//        [label setNumberOfLines:0];
-//        [label setFont:[UIFont systemFontOfSize:FONT_SIZE]];
-//        [label setTag:1];
-//        
-//        [[cell contentView] addSubview:label];
-    
+        CGFloat tHeight = [self calcTextHeight:_commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"]];
+        UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 20.0f, CELL_CONTENT_WIDTH, tHeight)];
+        [label setLineBreakMode:NSLineBreakByWordWrapping];
+        //[label setMinimumFontSize:FONT_SIZE];
+        [label setNumberOfLines:0];
+        [label setFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:FONT_SIZE]];
+        [label setTag:1];
+        label.backgroundColor = [UIColor orangeColor];
+        label.text = _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"];
         
-        cell.commentWords.text = _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"];
+        [[cell contentView] addSubview:label];
+    
+        //cell.commentWords.numberOfLines = 0;
+        //cell.commentWords.text = _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"body"];
+        //cell.commentWords.backgroundColor = [UIColor orangeColor];
+        //cell.commentWords.frame = CGRectMake(0, 0, 320.0f, 22.0f);
+        //[cell.commentWords sizeToFit];
         NSLog(@"Setting ups and downs");
         cell.ups.text = [NSString stringWithFormat:@"%@", _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"ups"]];
         cell.downs.text = [NSString stringWithFormat:@"%@", _commentArray[1][@"data"][@"children"][indexPath.row][@"data"][@"downs"]];
+        cell.userInteractionEnabled = NO;
         NSLog(@"Done setting ups and downs");
-        cell.commentWords.layer.borderWidth = 2.0f;
 
     }
     // Configure the cell...
@@ -217,6 +212,19 @@
     return cell;
 }
 
+- (CGFloat) calcTextHeight: (NSString*) words
+{
+    NSString *text = words;
+    NSLog(@"CellText: %@", text);
+    // Get a CGSize for the width and, effectively, unlimited height
+    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+    // Get the size of the text given the CGSize we just made as a constraint
+    CGSize size = [text sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Medium" size:FONT_SIZE] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+    // Get the height of our measurement, with a minimum of 44 (standard cell size)
+    CGFloat height = MAX(size.height, 15.0f);
+    // return the height, with a bit of extra padding in
+    return height + (CELL_CONTENT_MARGIN * 2);
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

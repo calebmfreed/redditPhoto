@@ -141,7 +141,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self performSegueWithIdentifier:@"toPics" sender:self];
+    [self performSegueWithIdentifier:@"toList" sender:self];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -268,7 +268,7 @@
 }
 
 
-- (void)RPViewControllerDidFinish:(RPViewController*)controller
+- (void)SubContentListDone:(SubContentListViewController*)controller
 {
     NSLog(@"ViewReturned page: %@", _pages);
     NSNumber *page = [NSNumber numberWithInt:controller.numPage];
@@ -276,7 +276,7 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if([segue.identifier isEqualToString: @"toPics"])
+    if([segue.identifier isEqualToString: @"toList"])
     {
         NSIndexPath *selectedRowIndex = [self.tableView indexPathForSelectedRow];
         [[segue destinationViewController] setDelegate: self];

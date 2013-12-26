@@ -102,21 +102,22 @@ static NSString *const BaseURLString = @"http://www.reddit.com";
     // 1
     [_busy setHidesWhenStopped: YES];
     [_busy startAnimating];
-    NSString *subUrl = [NSString stringWithFormat:@"%@/r/%@/.json?limit=100&", BaseURLString, _subReddit];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:subUrl  parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //NSLog(@"JSON: %@", responseObject);
-        NSDictionary * tempDict = (NSDictionary *)responseObject;
-        _response = tempDict[@"data"];
-        //NSLog(@"single reponse, %@", [[[_response objectForKey:@"data"]objectForKey:@"children"]objectAtIndex:0]);
-        //NSLog(@"again single reponse, %@", tempDict[@"data"][@"children"][0][@"data"]);
-        [self.commentsButton setTitle:[NSString stringWithFormat:@"Comments: %@", _response[@"children"][numPage][@"data"][@"num_comments"]] forState:UIControlStateNormal];
+//    NSString *subUrl = [NSString stringWithFormat:@"%@/r/%@/.json?limit=100&", BaseURLString, _subReddit];
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    [manager GET:subUrl  parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        //NSLog(@"JSON: %@", responseObject);
+//        NSDictionary * tempDict = (NSDictionary *)responseObject;
+//        _response = tempDict[@"data"];
+//        //NSLog(@"single reponse, %@", [[[_response objectForKey:@"data"]objectForKey:@"children"]objectAtIndex:0]);
+//        //NSLog(@"again single reponse, %@", tempDict[@"data"][@"children"][0][@"data"]);
+//        [self.commentsButton setTitle:[NSString stringWithFormat:@"Comments: %@", _response[@"children"][numPage][@"data"][@"num_comments"]] forState:UIControlStateNormal];
+//
+//        [self loadPicture:numPage];
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        NSLog(@"Error: %@", error);
+//    }];
+    [self loadPicture:numPage];
 
-        [self loadPicture:numPage];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
-    
 //    UITapGestureRecognizer *doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewDoubleTapped:)];
 //    doubleTapRecognizer.numberOfTapsRequired = 2;
 //    doubleTapRecognizer.numberOfTouchesRequired = 1;
@@ -182,6 +183,7 @@ static NSString *const BaseURLString = @"http://www.reddit.com";
     NSLog(@"Huh: %@",tempDict);
 
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:tempDict[@"url"]]];
+    NSLog(@"7LetterString:%@", [request.URL.absoluteString substringWithRange:NSMakeRange(7, 11)]);
     if([[request.URL.absoluteString substringFromIndex:[request.URL.absoluteString length]-3] isEqualToString:@"gif"])
     {
         [_webView setHidden:NO];
@@ -190,6 +192,14 @@ static NSString *const BaseURLString = @"http://www.reddit.com";
     }
     else if([[request.URL.absoluteString substringWithRange:NSMakeRange(7, 11)] isEqualToString:@"imgur.com/a"])
     {
+        NSLog(@"Mobile Gallery");
+        [_webView setHidden:NO];
+        [_webView loadRequest:request];
+        [_busy stopAnimating];
+    }
+    else if([[request.URL.absoluteString substringWithRange:NSMakeRange(8, 11)] isEqualToString:@"imgur.com/a"])
+    {
+        NSLog(@"Mobile Gallery");
         [_webView setHidden:NO];
         [_webView loadRequest:request];
         [_busy stopAnimating];

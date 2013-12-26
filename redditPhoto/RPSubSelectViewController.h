@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RPViewController.h"
 #import "Subreddits.h"
+#import "SubContentListViewController.h"
 
 @interface RPSubSelectViewController : UITableViewController{
     int returnedNum;
