@@ -31,7 +31,7 @@
     self.suggested.delegate = self;
     _done.layer.cornerRadius = 10;
     _done.clipsToBounds = YES;
-    _suggestedSubs = @[@"wtf", @"nsfw", @"funny", @"pics", @"adviceanimals", @"mobilewallpapers", @"america"];
+    _suggestedSubs = @[@"wtf", @"funny", @"pics", @"adviceanimals", @"mobilewallpapers", @"america"];
     NSLog(@"%@", _suggestedSubs);
     
 	// Do any additional setup after loading the view.
